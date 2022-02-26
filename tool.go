@@ -69,15 +69,28 @@ func (t *tool) options() []string {
 		intf = "lanplus"
 	}
 
-	options := []string{
-		"-H", t.Hostname,
-		"-U", t.Username,
-		"-P", t.Password,
-		"-I", intf,
-	}
+	var options []string
 
-	if t.Port != 0 {
-		options = append(options, "-p", strconv.Itoa(t.Port))
+	switch intf {
+		case "open":
+		case "free":
+			// use port for device id
+			options = []string{
+				"-d", strconv.Itoa(t.Port),
+				"-I", intf,
+			}
+		default:
+
+			options := []string{
+				"-H", t.Hostname,
+				"-U", t.Username,
+				"-P", t.Password,
+				"-I", intf,
+			}
+
+			if t.Port != 0 {
+				options = append(options, "-p", strconv.Itoa(t.Port))
+			}
 	}
 
 	return options
