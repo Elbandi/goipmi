@@ -63,6 +63,22 @@ type DeviceIDResponse struct {
 	ProductID               uint16
 }
 
+func (r *DeviceIDResponse) UnmarshalBinary(buf []byte) error {
+	if len(buf) < 16 {
+		return ErrShortPacket
+	}
+	r.CompletionCode = CompletionCode(buf[0])
+	r.DeviceID = buf[1]
+	r.DeviceRevision = buf[2]
+	r.FirmwareRevision1 = buf[3]
+	r.FirmwareRevision2 = buf[4]
+	r.IPMIVersion = buf[5]
+	r.AdditionalDeviceSupport = buf[6]
+	r.ManufacturerID = OemID(uint16(buf[8])<<8 | uint16(buf[7])) // FIXME: buf[9] << 16
+	r.ProductID = uint16(buf[11])<<8 | uint16(buf[10])
+	return nil
+}
+
 // AuthCapabilitiesRequest per section 22.13
 type AuthCapabilitiesRequest struct {
 	ChannelNumber uint8
