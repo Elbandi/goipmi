@@ -33,6 +33,7 @@ const (
 	CommandGetSystemBootOptions     = Command(0x09)
 	CommandSetUserName              = Command(0x45)
 	CommandGetUserName              = Command(0x46)
+	CommandI2C                      = Command(0x52)
 )
 
 // Request structure
